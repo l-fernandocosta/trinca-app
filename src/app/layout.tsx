@@ -1,3 +1,4 @@
+import { Toaster } from "@/components/ui/toaster";
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
@@ -20,7 +21,10 @@ export default function RootLayout({
     <html lang='en'>
       <ClerkProvider>
         <Provider>
-          <body className={inter.className} suppressHydrationWarning>{children}</body>
+          <body className={inter.className}>
+            {children}
+            <Toaster />
+          </body>
         </Provider>
       </ClerkProvider>
     </html>

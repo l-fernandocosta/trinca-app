@@ -21,13 +21,11 @@ async function fetchBarbecues(
     },
   });
 
-  console.log(query);
   if (!response.ok) {
     throw new Error("FAILED_FETCH_BBQS");
   }
 
   const data: FindManyBBQSOutput = await response.json();
-  console.log(data, "data");
   return data;
 }
 
