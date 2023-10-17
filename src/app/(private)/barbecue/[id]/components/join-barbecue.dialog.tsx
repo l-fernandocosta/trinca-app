@@ -16,9 +16,8 @@ import { useToast } from "@/components/ui/use-toast";
 import { findBBQErrorMapper } from "@/lib/queries/bbqs/find/error-mapper";
 import { FindBarbecueByIdQueryKey } from "@/lib/queries/bbqs/find/find-query";
 import { joinBBQ } from "@/lib/queries/bbqs/join-bbq/join-bbq.mutation";
-import { getQueryClient } from "@/lib/queries/client";
 import { useUser } from "@clerk/nextjs";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
@@ -26,6 +25,7 @@ import React from "react";
 
 export const JoinBarbecueDialog = () => {
   const { toast } = useToast();
+  const client = useQueryClient();
   const { push } = useRouter();
   const params = useParams();
   const { user } = useUser();
@@ -40,24 +40,19 @@ export const JoinBarbecueDialog = () => {
 
   const joinBBQMutation = useMutation({
     mutationFn: () => joinBBQ(input),
-    onSuccess: () => {
+    onSuccess: async () => {
+      await client.invalidateQueries(FindBarbecueByIdQueryKey(input.bbqId));
+
       toast({
         title: "Deu tudo certo !",
         description: "Agora é só esperar o churras. ",
         action: (
-          <Button asChild size="sm" variant={"outline"}>
-            <Link href={`/user/invited/${user?.id}`} >Ver todos</Link>
+          <Button asChild size='sm' variant={"outline"}>
+            <Link href={`/user/invited/${user?.id}`}>Ver todos</Link>
           </Button>
         ),
       });
-      const client = getQueryClient();
-      client.invalidateQueries({
-        exact: false,
-        stale: true,
-        refetchType: "all",
-        queryKey: FindBarbecueByIdQueryKey(user?.id),
-      });
-      push("/home");
+
       onCloseDialog();
     },
     onError: (e: AxiosError) => {

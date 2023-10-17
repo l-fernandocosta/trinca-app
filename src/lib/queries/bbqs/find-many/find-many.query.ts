@@ -26,6 +26,7 @@ async function fetchBarbecues(
   }
 
   const data: FindManyBBQSOutput = await response.json();
+
   return data;
 }
 

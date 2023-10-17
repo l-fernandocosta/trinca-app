@@ -25,6 +25,7 @@ async function findBarbecue(
 export const useBarbecueById = (id?: string) => {
   return useQuery({
     queryFn: findBarbecue,
+    enabled: id ? true : false, 
     queryKey: FindBarbecueByIdQueryKey(id),
   });
 };

@@ -7,29 +7,31 @@ import {
   invitedBbqsQueryKey,
   useInvitedBBQS,
 } from "@/lib/queries/bbqs/invited/find-invited-bbqs.query";
-import { getQueryClient } from "@/lib/queries/client";
 import { currencyFormat } from "@/packages/helpers/currency-formatter.helper";
 import { BarbecueGuestStatusEnum } from "@/packages/http/value-objects/barbecue-guest-status.enum";
 import { useUser } from "@clerk/nextjs";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { format } from "date-fns";
 import { DollarSign, User, Users2, Waypoints } from "lucide-react";
 
 export const BarbecueInviteGrid = () => {
+  const client = useQueryClient();
   const { user } = useUser();
   const { toast } = useToast();
   const { data: bbqs } = useInvitedBBQS(user?.id);
 
-const confirmInviteMutation = useMutation({
-    mutationFn: (bbqGuestId: string) =>
+  const confirmInviteMutation = useMutation({
+    mutationFn: async (bbqGuestId: string) =>
       confirmInvite({
         bbqGuestId,
         userid: user?.id || "",
       }),
     onSuccess: async () => {
-      const client = getQueryClient();
-      client.invalidateQueries(invitedBbqsQueryKey(user?.id));
+      await client
+        .invalidateQueries(invitedBbqsQueryKey(user?.id))
+        .catch((e) => console.error(e, "invalidate error"))
+        .then((r) => console.log(r, "invalidate success"));
       toast({ title: "Presença confirmada com sucesso." });
     },
     onError: (e: AxiosError) => {
