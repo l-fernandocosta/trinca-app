@@ -10,6 +10,7 @@ const inter = Montserrat({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "trin.ca",
   description: "Hora do churras. ",
+  
 };
 
 export default function RootLayout({
@@ -18,7 +19,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang='en'>
+    <html lang='pt'>
+      <meta name="google" content="notranslate" />
+      
       <ClerkProvider>
         <Provider>
           <body className={inter.className}>
