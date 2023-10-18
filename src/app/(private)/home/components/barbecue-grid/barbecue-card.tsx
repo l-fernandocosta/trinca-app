@@ -39,7 +39,7 @@ export const BarbecueCard = ({ bbq }: { bbq: Barbecue }) => {
         className='absolute right-3'
         aria-label='Ver mais informações sobre o churrasco'
       >
-        <Link href={`/barbecue/${bbq.id}?origin=home`}>
+        <Link href={`/barbecue/${bbq.id}?origin=home&name=${bbq.title}`}>
           <Eye className='w-3 h-3' />
         </Link>
       </Button>
