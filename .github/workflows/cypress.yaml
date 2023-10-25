@@ -1,20 +1,34 @@
 name: Cypress E2E
 
-on: push
+on:
+  push:
+    branches:
+      - main
+env:
+  CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
+  CYPRESS_INTERCEPT_URL: "https://ihonestapi.uk"
+  NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+  NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL: ${{ secrets.NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL}}
+  NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL: ${{ secrets.NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL}}
+  NEXT_PUBLIC_CLERK_SIGN_IN_URL: ${{ secrets.NEXT_PUBLIC_CLERK_SIGN_IN_URL}}
+  NEXT_PUBLIC_CLERK_SIGN_UP_URL: ${{ secrets.NEXT_PUBLIC_CLERK_SIGN_UP_URL}}
 
 jobs:
   cypress-run:
     runs-on: ubuntu-22.04
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.8.0
+
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
-          build: pnpm run build
-          test: pnpmt cy:ci
+          run: export CYPRESS_TEST_EMAIL=${{ secrets.CYPRESS_TEST_EMAIL }} && export CYPRESS_TEST_PASSWORD=${{secrets.CYPRESS_TEST_PASSWORD }} && pnpm cypress run
         env:
-          test_email: ${{secrets.CYPRESS_TEST_EMAIL}}
-          test_password: ${{secrets.CYPRESS_TEST_PASSWORD}}
-          user_id: ${{secrets.CYPRESS_TEST_USER_ID}}
+          CYPRESS_TEST_EMAIL: ${{secrets.CYPRESS_TEST_EMAIL}}
+          CYPRESS_TEST_PASSWORD: ${{secrets.CYPRESS_TEST_PASSWORD}}

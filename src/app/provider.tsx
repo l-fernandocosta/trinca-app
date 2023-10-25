@@ -8,7 +8,6 @@ export const Provider = ({ children }: PropsWithChildren) => {
   return (
     <QueryClientProvider client={client}>
       {children}
-
     </QueryClientProvider>
   );
 };

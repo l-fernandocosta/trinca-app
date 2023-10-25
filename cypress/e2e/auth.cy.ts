@@ -1,4 +1,5 @@
 describe("template spec", () => {
+
   beforeEach(() => {
     cy.signIn();
     cy.location("pathname", { timeout: 60000 }).should("include", "/home");
@@ -18,6 +19,6 @@ const openPopoverBtn = () =>
   cy.get("button[aria-label='Open user button']").click();
 
 const findAuthenticatedUserEmail = () =>
-  cy.get("span").contains(Cypress.env("test_email"));
+  cy.get("span").contains(Cypress.env("CYPRESS_TEST_EMAIL"));
 
 const signoutBtn = () => cy.get("span").contains("Sign out").click();
