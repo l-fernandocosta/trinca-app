@@ -1,0 +1,20 @@
+name: Cypress E2E
+
+on: push
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          build: pnpm run build
+          test: pnpmt cy:ci
+        env:
+          test_email: ${{secrets.CYPRESS_TEST_EMAIL}}
+          test_password: ${{secrets.CYPRESS_TEST_PASSWORD}}
+          user_id: ${{secrets.CYPRESS_TEST_USER_ID}}
