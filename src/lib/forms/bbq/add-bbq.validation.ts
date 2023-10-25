@@ -7,12 +7,12 @@ export const addBBQValidation = z.object({
     .string({
       required_error,
     })
-    .min(5, { message: "Utilize pelo menos 5 caracteres." }),
+    .min(1, { message: "Utilize pelo menos 5 caracteres." }),
   date: z
     .string({ required_error,invalid_type_error: "Utilize uma data válida." })
     .transform((date) => format(new Date(date), "yyyy-MM-dd")),
   hour: z.string({ required_error }),
-  totalPrice: z.string({ required_error }).transform((val) => Number(val)),
+  totalPrice: z.string({ required_error }).min(0).transform((val) => Number(val)),
   minContribution: z
     .string({
       required_error,
@@ -21,7 +21,7 @@ export const addBBQValidation = z.object({
 
   maxCapacity: z
     .string({ required_error })
-    .min(2)
+    .min(1)
     .transform((val) => Number(val)),
 });
 

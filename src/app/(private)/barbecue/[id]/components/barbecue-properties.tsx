@@ -11,7 +11,7 @@ import { UserInformation } from "./user-information";
 
 export const BarbecueProperties = () => {
   const params = useParams();
-  const { refresh } =useRouter();
+  const { refresh } = useRouter();
   const { id } = params as { id: string };
   const { data: bbq, isLoading, isError } = useBarbecueById(id);
 

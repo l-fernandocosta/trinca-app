@@ -23,6 +23,7 @@ import { useUser } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import { format } from "date-fns";
 import { Eye } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -92,7 +93,7 @@ export const AddBarbecueForm = () => {
             <FormItem>
               <FormLabel>Data</FormLabel>
               <FormControl>
-                <Input placeholder='Data' {...field} type='date' />
+                <Input placeholder='Data' {...field} type='date' min={format(new Date(), 'yyyy-MM-dd')} />
               </FormControl>
               <FormDescription>Data do evento.</FormDescription>
               <FormMessage />
@@ -141,9 +142,10 @@ export const AddBarbecueForm = () => {
               <FormLabel>Contribuição mínima</FormLabel>
               <FormControl>
                 <Input
-                  placeholder='Contribuição mínima'
                   {...field}
+                  min={1}
                   type='number'
+                  placeholder='Contribuição mínima'
                 />
               </FormControl>
               <FormDescription>
@@ -162,9 +164,10 @@ export const AddBarbecueForm = () => {
               <FormLabel>Arrecadação total</FormLabel>
               <FormControl>
                 <Input
-                  placeholder='Arrecadação total'
                   {...field}
+                  min={1}
                   type='number'
+                  placeholder='Arrecadação total'
                 />
               </FormControl>
               <FormDescription>
